@@ -1,0 +1,296 @@
+SOFTWARE AND CODING PART –
+PYTHON CODE FOR OPERATING TWO STEPPERS SIMULTANEOUSLY –
+
+import RPi.GPIO as GPIO
+from time import sleep
+import os
+
+# Define GPIO pins for first motor
+motor_channel_1 = (37, 33, 31, 29)
+
+# Define GPIO pins for second motor
+motor_channel_2 = (38, 36, 32, 30)
+
+# Delay time for motor movement
+delayTime = 0.005
+
+# Setup GPIO
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(motor_channel_1, GPIO.OUT)
+GPIO.setup(motor_channel_2, GPIO.OUT)
+
+def forward(steps, motor_channel):
+    for _ in range(steps):
+        GPIO.output(motor_channel, (GPIO.HIGH, GPIO.LOW, GPIO.HIGH, GPIO.LOW))
+        sleep(delayTime)
+        GPIO.output(motor_channel, (GPIO.LOW, GPIO.HIGH, GPIO.HIGH, GPIO.LOW))
+        sleep(delayTime)
+        GPIO.output(motor_channel, (GPIO.LOW, GPIO.HIGH, GPIO.LOW, GPIO.HIGH))
+        sleep(delayTime)
+        GPIO.output(motor_channel, (GPIO.HIGH, GPIO.LOW, GPIO.LOW, GPIO.HIGH))
+        sleep(delayTime)
+
+def backward(steps, motor_channel):
+    for _ in range(steps):
+        GPIO.output(motor_channel, (GPIO.HIGH, GPIO.LOW, GPIO.LOW, GPIO.HIGH))
+        sleep(delayTime)
+        GPIO.output(motor_channel, (GPIO.LOW, GPIO.HIGH, GPIO.LOW, GPIO.HIGH))
+        sleep(delayTime)
+        GPIO.output(motor_channel, (GPIO.LOW, GPIO.HIGH, GPIO.HIGH, GPIO.LOW))
+        sleep(delayTime)
+        GPIO.output(motor_channel, (GPIO.HIGH, GPIO.LOW, GPIO.HIGH, GPIO.LOW))
+        sleep(delayTime)
+
+# def capture_image(file_name):
+#os.system("raspistill -o {}".format(file_name))
+
+# Main code
+try:
+    # Capture images with the first motor
+    print('capturing 1')
+    capture_image("raspistill -o P1.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    forward(5, motor_channel_2)
+
+
+    print('capturing 2')
+    capture_image("raspistill -o P2.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    forward(5, motor_channel_2)
+
+    print('capturing 3')
+    capture_image("raspistill -o P3.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    backward(5, motor_channel_2)
+
+    print('capturing 4')
+    capture_image("raspistill -o P4.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    backward(5, motor_channel_2)
+
+
+    print('capturing 5')
+    capture_image("raspistill -o P5.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    forward(5, motor_channel_2)
+
+    print('capturing 6')
+    capture_image("raspistill -o P6.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    forward(5, motor_channel_2)
+
+    print('capturing 7')
+    capture_image("raspistill -o P7.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    backward(5, motor_channel_2)
+
+    print('capturing 8')
+    capture_image("raspistill -o P8.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    backward(5, motor_channel_2)
+
+    print('capturing 9')
+    capture_image("raspistill -o P9.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    forward(5, motor_channel_2)
+
+    print('capturing 10')
+    capture_image("raspistill -o P10.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    forward(5, motor_channel_2)
+
+    print('capturing 11')
+    capture_image("raspistill -o P11.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    backward(5, motor_channel_2)
+
+    print('capturing 12')
+    capture_image("raspistill -o P12.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    backward(5, motor_channel_2)
+
+    print('capturing 13')
+    capture_image("raspistill -o P13.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    forward(5, motor_channel_2)
+
+    print('capturing 14')
+    capture_image("raspistill -o P14.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    forward(5, motor_channel_2)
+
+    print('capturing 15')
+    capture_image("raspistill -o P15.png")
+    sleep(3)
+    forward(6, motor_channel_1)
+    backward(5, motor_channel_2)
+
+    
+
+except KeyboardInterrupt:
+    print("Keyboard interrupt detected. Exiting...")
+
+finally:
+    # Cleanup GPIO
+    GPIO.cleanup()
+
+EXPLANATION OF ABOVE CODE IN DETAIL-
+Certainly, let's delve into the code in more detail:
+
+1. **Importing Libraries**:
+   - `RPi.GPIO`: This library provides a Python interface for controlling the General Purpose Input Output (GPIO) pins on a Raspberry Pi.
+   - `sleep` from `time`: This function allows the script to introduce delays in the execution, which can be useful for timing motor movements.
+   - `os`: This module provides a portable way to use operating system-dependent functionality, such as running shell commands.
+
+2. **Defining GPIO Pins**:
+   - `motor_channel_1` and `motor_channel_2`: These variables define tuples containing the GPIO pin numbers connected to the first and second motors, respectively.
+
+3. **Setting Up GPIO**:
+   - `GPIO.setwarnings(False)`: This line disables GPIO warnings.
+   - `GPIO.setmode(GPIO.BOARD)`: This sets the numbering scheme for the GPIO pins to use the physical pin numbers on the Pi board.
+   - `GPIO.setup(motor_channel_1, GPIO.OUT)`: This configures the GPIO pins specified in `motor_channel_1` tuple as output pins.
+   - `GPIO.setup(motor_channel_2, GPIO.OUT)`: Similarly, this configures the GPIO pins specified in `motor_channel_2` tuple as output pins.
+
+4. **Defining Motor Movement Functions**:
+   - `forward(steps, motor_channel)`: This function moves the motor specified by `motor_channel` forward for the specified number of `steps`. It achieves this by activating the coils in a predefined sequence.
+   - `backward(steps, motor_channel)`: Similar to `forward()`, this function moves the motor backward for the specified number of `steps`.
+
+5. **Main Code**:
+   - Inside the `try` block, a sequence of captures and motor movements is executed.
+   - Each iteration of the loop captures an image and then moves both motors accordingly.
+   - After capturing each image, there's a delay of 3 seconds (`sleep(3)`) before the motors move.
+   - The sequence of movements and captures seems to be predetermined based on the comments and print statements.
+   - However, the `capture_image()` function is commented out, indicating it's not defined in this script. This function would need to be defined separately to capture images using the Raspberry Pi camera.
+
+6. **Keyboard Interrupt Handling**:
+   - The script includes exception handling using a `try-except` block to catch keyboard interrupts (`KeyboardInterrupt`).
+   - If a keyboard interrupt is detected, the script prints a message and exits gracefully.
+
+7. **GPIO Cleanup**:
+   - The `finally` block ensures that GPIO pins are cleaned up properly using `GPIO.cleanup()`. This releases all GPIO resources that have been used by the script.
+
+This script essentially orchestrates the movement of motors connected to the Raspberry Pi GPIO pins to control the position of a camera, facilitating the systematic capture of images.
+
+
+ARDUINO CODE FOR RUNNING A STEPPER AND SERVO MOTOR SIMULTAENOUSLY-
+#include <Servo.h>
+#include <Stepper.h>
+
+// Define the number of steps per revolution
+const int stepsPerRevolution = 200;
+
+// Initialize the stepper motor with the number of steps per revolution and pin numbers
+Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11);
+
+Servo myServo;  // Create a servo object
+
+void setup() {
+  myServo.attach(12); // Attach the servo to pin 12
+  myStepper.setSpeed(100); // Set the speed of the stepper motor to 100 RPM
+}
+
+void loop() {
+  // Move the stepper motor 45 degrees and set the servo angle to 100 degrees
+  myStepper.step(stepsPerRevolution / 8); 
+  myServo.write(100);
+  delay(2000); // Delay for 2 seconds
+  
+  // Move the stepper motor 45 degrees and set the servo angle to 110 degrees
+  myStepper.step(stepsPerRevolution / 8); 
+  myServo.write(110);
+  delay(2000); // Delay for 2 seconds
+  
+  // Move the stepper motor 45 degrees and set the servo angle to 120 degrees
+  myStepper.step(stepsPerRevolution / 8); 
+  myServo.write(120);
+  delay(2000); // Delay for 2 seconds
+  
+  // Move the stepper motor 45 degrees and set the servo angle to 130 degrees
+  myStepper.step(stepsPerRevolution / 8); 
+  myServo.write(130);
+  delay(2000); // Delay for 2 seconds
+  
+  // Move the stepper motor 45 degrees and set the servo angle to 140 degrees
+  myStepper.step(stepsPerRevolution / 8); 
+  myServo.write(140);
+  delay(2000); // Delay for 2 seconds
+  
+  // Move the stepper motor 45 degrees and set the servo angle to 150 degrees
+  myStepper.step(stepsPerRevolution / 8); 
+  myServo.write(150);
+  delay(2000); // Delay for 2 seconds
+  
+  // Move the stepper motor 45 degrees and set the servo angle to 160 degrees
+  myStepper.step(stepsPerRevolution / 8); 
+  myServo.write(160);
+  delay(2000); // Delay for 2 seconds
+  
+  // Move the stepper motor 45 degrees
+  myStepper.step(stepsPerRevolution / 8); 
+  // Delay for 2 seconds
+  delay(2000);
+}
+
+EXPLANATION AND BREAKDOWN OF CODE -
+1.	Include Libraries:
+cpp
+Copy code
+#include <Servo.h> #include <Stepper.h> 
+These lines include necessary libraries for controlling servo and stepper motors.
+
+2.	Constants and Variables:
+cpp
+Copy code
+const int stepsPerRevolution = 200; 
+This constant defines the number of steps per revolution for the stepper motor. It's set to 200, which is a common value for stepper motors
+.
+
+3.	Initialize Motors:
+cpp
+Copy code
+Stepper myStepper(stepsPerRevolution, 8, 9, 10, 11); Servo myServo; 
+
+•	myStepper: This object initializes the stepper motor. It specifies the number of steps per revolution and the pin numbers to which the stepper motor is connected (pins 8, 9, 10, and 11).
+•	myServo: This object initializes the servo motor.
+
+
+4.	Setup Function:
+cpp
+Copy code
+void setup() { myServo.attach(12); myStepper.setSpeed(100); } 
+•	myServo.attach(12): This line attaches the servo motor to pin 12.
+•	myStepper.setSpeed(100): This sets the speed of the stepper motor to 100 RPM (Rotations Per Minute).
+
+
+5.	Loop Function:
+cpp
+Copy code
+void loop() { myStepper.step(stepsPerRevolution / 8); myServo.write(100); delay(2000); // Similar code blocks for different servo angles and stepper motor movements } 
+•	The loop function executes a sequence of movements repeatedly:
+•	It moves the stepper motor 45 degrees (stepsPerRevolution / 8 steps) and sets the servo angle to 100 degrees.
+•	It introduces a delay of 2 seconds (delay(2000)) before the next movement.
+•	This sequence repeats with different servo angles until the end of the loop.
+
+
+6.	Explanation:
+•	The script combines the control of a stepper motor and a servo motor to perform a specific sequence of movements.
+•	The stepper motor moves in increments of 45 degrees, while the servo motor changes its angle at each step.
+•	By adjusting the stepper motor steps and servo angles, you can control the motion of connected mechanical components precisely.
+•	The loop repeats this sequence indefinitely until the program is stopped or reset.
+This code can be used in various applications such as robotic arms, camera gimbals, or any other system requiring coordinated motion control of both stepper and servo motors.
+
